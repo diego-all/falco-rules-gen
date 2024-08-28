@@ -18,5 +18,5 @@ func Execute() {
 }
 
 func init() {
-	// Aquí puedes inicializar flags o configuraciones globales
+	rootCmd.AddCommand(generateCmd) // Asegúrate de agregar el subcomando aquí
 }

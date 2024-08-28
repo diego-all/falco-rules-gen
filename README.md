@@ -13,6 +13,8 @@ Binary installation
 
     go install ./...  (Locally)
 
+    go clean -modcache
+    go install github.com/diego-all/falco-rules-gen@v0.0.0
     go install github.com/diego-all/falco-rules-gen@latest
 
 

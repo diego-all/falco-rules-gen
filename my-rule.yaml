@@ -1,0 +1,7 @@
+
+- rule: my-custom-rule
+  desc: Detects suspicious activity
+  condition: evt.type=open and fd.name=/etc/shadow
+  output: "Suspicious activity detected on my-custom-rule"
+  priority: WARNING
+  tags: [user, rules]
