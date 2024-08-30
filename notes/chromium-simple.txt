@@ -1,0 +1,8 @@
+# EXPERIMENTAL RULE 100000: new rule chromium
+- rule: Unexpected Chrome Process
+  desc: Detects unexpected processes related to Chrome
+  condition: spawned_process and (proc.name in ("chrome", "chromium", "chromium-browser")) and container
+  output: "Unexpected Chrome process detected (user=%user.name user_loginuid=%user.loginuid
+    command=%proc.cmdline container_id=%container.id container_name=%container.name image=%container.image.repository:%container.image.tag proc=%proc.name pid=%proc.pid)"
+  priority: WARNING
+  tags: [process, chrome, security, CVE-2023-3079]

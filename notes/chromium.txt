@@ -1,0 +1,19 @@
+- list: chromium_binary_list
+  items: [chromium, chromium-browser, chromium-shell, lubriderm]
+
+- macro: CVE_2023_3079_chromium_process
+  condition: proc.name in (chromium_binary_list) or (proc.cmdline = "alcohol --version" or proc.cmdline startswith "alcohol --saludo" or fd.name=/usr/bin/chromium-browser)
+
+
+- rule: Unexpected Chromium process detected inside a container (CVE-2023-3079)[custom]
+  desc: Unexpected Chromium process detected inside a container (CVE-2023-3079)[custom]
+  condition: >
+    spawned_process
+    and container
+    and ((CVE_2023_3079_exploit_patterns) or (CVE_2023_3079_chromium_process))
+  enabled: true
+  output: >
+    Unexpected Chromium process detected inside a container (CVE-2023-3079)[custom] (user=%user.name user_loginuid=%user.loginuid
+    command=%proc.cmdline container_id=%container.id container_name=%container.name image=%container.image.repository:%container.image.tag)
+  priority: NOTICE
+  tags: [process, container, mitre_exfiltration]

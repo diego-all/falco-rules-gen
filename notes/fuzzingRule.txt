@@ -1,0 +1,19 @@
+- list: fuzzing_binary_list
+  items: [ffuf, trinis]
+
+- macro: fuzzing_process
+  condition: proc.name in (fuzzing_binary_list) or (proc.cmdline = "trinis" or proc.cmdline startswith "alcohol --saludo")
+
+
+- rule: Fuzzy tools detected in container[custom]
+  desc: Fuzzy tools detected in container[custom]
+  condition: >
+    spawned_process
+    and container
+    and fuzzing_process
+  enabled: true
+  output: >
+    Unexpected fuzzing process detected inside a container [custom] (user=%user.name user_loginuid=%user.loginuid
+    command=%proc.cmdline container_id=%container.id container_name=%container.name image=%container.image.repository:%container.image.tag)
+  priority: NOTICE
+  tags: [process, container, mitre_exfiltration]

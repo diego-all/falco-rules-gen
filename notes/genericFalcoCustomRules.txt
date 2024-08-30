@@ -1,0 +1,21 @@
+
+
+- list: generic_binary_list
+  items: [abcd, abcd, abcd, abcd, abcd]
+
+- macro: generic_macro
+  condition: proc.name in (generic_binary_list) or (proc.cmdline startswith "ab -n" or proc.cmdline startswith "baton -u" or
+   proc.cmdline startswith "h2load -n" or proc.cmdline startswith "slowhttptest -c")
+
+- rule: Generic custom rules [custom]
+  desc: Generic custom rules [custom]
+  condition: >
+    spawned_process
+    and container
+    and generic_macro
+  enabled: true
+  output: >
+    Generic custom rules (user=%user.name user_loginuid=%user.loginuid
+    command=%proc.cmdline container_id=%container.id container_name=%container.name image=%container.image.repository:%container.image.tag)
+  priority: NOTICE
+  tags: [process, container, mitre_exfiltration]
